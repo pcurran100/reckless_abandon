@@ -1,0 +1,50 @@
+:root{
+  --paper:#d9ebe5; --ink:#000000; --text:#141414; --muted:#3e4d48;
+  --red:#e0482a; --blue:#5a7ddb; --yellow:#f2e36b; --green:#6cae88;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#16211e; --ink:#eef0e6; --text:#eef0e6; --muted:#a9b8b2;
+    --red:#ee5a3b; --blue:#7f9cec; --yellow:#eadb63; --green:#7fc29c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#16211e; --ink:#eef0e6; --text:#eef0e6; --muted:#a9b8b2;
+  --red:#ee5a3b; --blue:#7f9cec; --yellow:#eadb63; --green:#7fc29c;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--text);font:400 1.0625rem/1.65 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;position:relative;overflow-x:hidden}
+
+
+main{position:relative;z-index:1;max-width:29rem;margin-left:clamp(1.25rem,9vw,8rem);margin-right:1.25rem}
+section{min-height:clamp(520px,95vh,860px);min-height:clamp(520px,95svh,860px);display:flex;flex-direction:column;justify-content:center;padding:4rem 0}
+h1,h2{font-family:"Young Serif",Georgia,"Times New Roman",serif;font-weight:400;color:var(--text);margin:0}
+h1{font-size:clamp(3.5rem,13vw,7.5rem);line-height:.9;letter-spacing:-.02em}
+h2{font-size:clamp(1.75rem,4.5vw,2.5rem);line-height:1.1;margin-bottom:.9rem}
+p{margin:0 0 1rem;color:var(--muted)}
+.lede{font-size:1.25rem;color:var(--text);margin-top:1.5rem;max-width:22rem}
+
+#regen{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:2;
+  font:500 .95rem/1 Figtree,system-ui,sans-serif;color:var(--text);background:var(--paper);
+  border:1.5px solid var(--ink);border-radius:999px;padding:.7rem 1.1rem;cursor:pointer}
+#regen:hover{background:var(--ink);color:var(--paper)}
+#regen:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+/* Site header */
+.site-header nav{display:flex;flex-wrap:wrap;gap:.25rem 1.5rem}
+.site-header{position:relative;z-index:2;
+  padding:1.25rem 1.25rem 0 clamp(1.25rem,9vw,8rem)}
+.site-header a{font:500 1rem/1.4 Figtree,system-ui,sans-serif;color:var(--text);text-decoration:none;
+  padding:.25rem 0;border-bottom:1.5px solid transparent}
+.site-header a:hover{border-bottom-color:var(--ink)}
+.site-header a[aria-current="page"]{border-bottom-color:var(--red)}
+.site-header a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+main a{color:var(--text);text-decoration-thickness:1.5px;text-underline-offset:.2em}
+main a:hover{text-decoration-color:var(--red)}

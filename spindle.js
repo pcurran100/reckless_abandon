@@ -4,7 +4,7 @@
   // ---- Tune here -------------------------------------------------------
   const CONFIG = {
     content: 'main',           // element holding your page content
-    protect: 'h1, h2, h3, h4, p, li, img, figure, pre, table, blockquote', // nothing is drawn over these
+    protect: 'h1, h2, h3, h4, p, li, img, figure, pre, table, blockquote, .site-header a', // nothing is drawn over these
     textPadding: 18,           // px of clear space kept around protected elements
     seed: null,                // null = new drawing each load; a number = same drawing every time
 
@@ -81,7 +81,7 @@
   let zones = [];
   function measureZones() {
     const sr = svg.getBoundingClientRect(), range = document.createRange();
-    zones = [...main.querySelectorAll(CONFIG.protect)].map(e => {
+    zones = [...document.querySelectorAll(CONFIG.protect)].map(e => {
       range.selectNodeContents(e);
       const r = range.getBoundingClientRect();
       return { x0: r.left - sr.left, y0: r.top - sr.top, x1: r.right - sr.left, y1: r.bottom - sr.top };
