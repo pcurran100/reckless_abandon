@@ -48,3 +48,10 @@ p{margin:0 0 1rem;color:var(--muted)}
 .site-header a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 main a{color:var(--text);text-decoration-thickness:1.5px;text-underline-offset:.2em}
 main a:hover{text-decoration-color:var(--red)}
+
+/* Photos: shown whole (never cropped), scaled to fit the text column and the screen */
+main img{display:block;max-width:100%;max-height:75vh;width:auto;height:auto;margin:1rem 0;border-radius:4px;
+  flex:none;align-self:flex-start;object-fit:contain}
+figure{margin:1rem 0;flex:none;align-self:flex-start;max-width:100%}
+figure img{margin:0 0 .5rem}
+figcaption{font-size:.9rem;color:var(--muted)}

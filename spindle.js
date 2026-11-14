@@ -29,7 +29,6 @@
     palette: ['--red', '--blue', '--yellow', '--green', '--ink'],
 
     // Scroll
-    revealAt: 0.8,             // the drawing edge sits this far down the visible area
     ease: 0.12                 // smoothing of the drawing edge (1 = instant)
   };
   // ----------------------------------------------------------------------
@@ -60,6 +59,7 @@
 
   let rng, strokes = [], pops = [], layers = {}, clipN = 0, maskN = 0, W = 0, H = 0;
   let current = 0, target = 0, ticking = false, io, sentinels;
+  let progress = 0, rMin = 0, rMax = 0;   // scroll progress 0..1 maps onto the drawing's start..end
   let seed = CONFIG.seed ?? ((Math.random() * 1e9) | 0), lastW = 0, lastH = 0;
   const visible = new Set();
   const SENT = 25;
@@ -82,8 +82,10 @@
   function measureZones() {
     const sr = svg.getBoundingClientRect(), range = document.createRange();
     zones = [...document.querySelectorAll(CONFIG.protect)].map(e => {
-      range.selectNodeContents(e);
-      const r = range.getBoundingClientRect();
+      // images have no text contents, so measure the element box instead
+      let r;
+      if (e.matches('img, figure, table, pre')) r = e.getBoundingClientRect();
+      else { range.selectNodeContents(e); r = range.getBoundingClientRect(); }
       return { x0: r.left - sr.left, y0: r.top - sr.top, x1: r.right - sr.left, y1: r.bottom - sr.top };
     });
   }
@@ -421,8 +423,12 @@
       if (!visible.size) return;
       let lo = Infinity, hi = -Infinity;
       for (const y of visible) { if (y < lo) lo = y; if (y > hi) hi = y; }
-      hi += SENT;
-      target = lo + (hi - lo) * CONFIG.revealAt;
+      hi = Math.min(H, hi + SENT);
+      // 0 at the very top (nothing drawn), 1 at the very bottom (everything finished)
+      const room = H - (hi - lo);
+      // the slice is measured in SENT-px steps, so snap to the ends when within one step
+      progress = room <= 0 || hi >= H - SENT ? 1 : lo <= 0 ? 0 : Math.min(1, lo / room);
+      target = rMin + (rMax - rMin) * progress;
       kick();
     });
     for (const d of sentinels.children) io.observe(d);
@@ -472,7 +478,13 @@
       }
     }
 
-    current = Math.max(0, target - 700);   // re-draw what's on screen
+    rMin = Infinity; rMax = -Infinity;
+    for (const s of strokes) { rMin = Math.min(rMin, s.start); rMax = Math.max(rMax, done(s)); }
+    for (const q of pops) { rMin = Math.min(rMin, q.at); rMax = Math.max(rMax, q.at); }
+    if (rMin > rMax) rMin = rMax = 0;
+    rMin -= 1;
+    target = rMin + (rMax - rMin) * progress;
+    current = Math.max(rMin, target - 700);   // re-draw what's on screen
     draw(current);
     watch();
     kick();
@@ -511,6 +523,14 @@
       if (document.documentElement.clientWidth !== lastW || Math.abs(document.body.offsetHeight - lastH) > 40) build();
     }, 150);
   }).observe(document.body);
+
+  // photos change the layout when they finish loading, so redraw around them
+  let lt;
+  document.addEventListener('load', e => {
+    if (e.target.tagName !== 'IMG') return;
+    clearTimeout(lt);
+    lt = setTimeout(build, 100);
+  }, true);
 
   const regen = document.getElementById('regen');
   if (regen) regen.addEventListener('click', () => {
