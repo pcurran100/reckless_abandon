@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patrick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#d9ebe5; --ink:#000000; --text:#141414; --muted:#3e4d48;
+  --red:#e0482a; --blue:#5a7ddb; --yellow:#f2e36b; --green:#6cae88;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#16211e; --ink:#eef0e6; --text:#eef0e6; --muted:#a9b8b2;
+    --red:#ee5a3b; --blue:#7f9cec; --yellow:#eadb63; --green:#7fc29c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#16211e; --ink:#eef0e6; --text:#eef0e6; --muted:#a9b8b2;
+  --red:#ee5a3b; --blue:#7f9cec; --yellow:#eadb63; --green:#7fc29c;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--text);font:400 1.0625rem/1.65 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;position:relative;overflow-x:hidden}
+
+
+main{position:relative;z-index:1;max-width:29rem;margin-left:clamp(1.25rem,9vw,8rem);margin-right:1.25rem}
+section{min-height:clamp(520px,95vh,860px);min-height:clamp(520px,95svh,860px);display:flex;flex-direction:column;justify-content:center;padding:4rem 0}
+h1,h2{font-family:"Young Serif",Georgia,"Times New Roman",serif;font-weight:400;color:var(--text);margin:0}
+h1{font-size:clamp(3.5rem,13vw,7.5rem);line-height:.9;letter-spacing:-.02em}
+h2{font-size:clamp(1.75rem,4.5vw,2.5rem);line-height:1.1;margin-bottom:.9rem}
+p{margin:0 0 1rem;color:var(--muted)}
+.lede{font-size:1.25rem;color:var(--text);margin-top:1.5rem;max-width:22rem}
+
+#regen{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:2;
+  font:500 .95rem/1 Figtree,system-ui,sans-serif;color:var(--text);background:var(--paper);
+  border:1.5px solid var(--ink);border-radius:999px;padding:.7rem 1.1rem;cursor:pointer}
+#regen:hover{background:var(--ink);color:var(--paper)}
+#regen:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<main>
+  <section>
+    <h1>Spindle</h1>
+    <p class="lede">Procedural lines in the manner of Miró, drawn as you scroll.</p>
+  </section>
+
+  <section>
+    <h2>The walk</h2>
+    <p>Each line is a pen taking small steps. Its curvature drifts at random and decays back toward straight, so the line bends in long, unhurried arcs rather than jittering.</p>
+  </section>
+
+  <section>
+    <h2>Loops and elbows</h2>
+    <p>Now and then the curvature locks high for a few dozen steps and the line ties itself in a loop. Rarer events snap the heading sideways to make an elbow.</p>
+  </section>
+
+  <section>
+    <h2>Endings</h2>
+    <p>A line finishes in a dot, a small ring, a filled shape, or an inward spiral, made by letting the curvature grow on every step until the pen winds itself to a stop.</p>
+  </section>
+
+  <section>
+    <h2>Stars and shapes</h2>
+    <p>Asterisks are a few crossing strokes. Shapes are flat colour from a five-colour palette, and where two shapes overlap, the overlap takes a third colour.</p>
+  </section>
+
+  <section>
+    <h2>Scroll</h2>
+    <p>Every line is an SVG stroke whose dash offset follows the page. The drawing edge eases toward your scroll position, so a jumpy wheel still draws smoothly. Scroll back up and the pen retreats.</p>
+    <p>Each drawing comes from a seed. Press New drawing for another.</p>
+  </section>
+</main>
+
+<button id="regen" type="button">New drawing</button>
+
+<script src="spindle.js" defer></script>
+</body>
+</html>
